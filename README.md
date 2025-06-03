@@ -15,10 +15,10 @@ This STIG requires that Windows Copilot be disabled to prevent unauthorized netw
 1. Open `regedit`
 2. Navigate to:
 3. Create a new key named: `WindowsCopilot`
-4. Inside it, create a new `DWORD (32-bit)` value:
-- Name: `TurnOffWindowsCopilot`
-- Value: `1` (Decimal)
-5. Restart the system
+4. Inside that key, create a new DWORD:
+- **Name:** `TurnOffWindowsCopilot`
+- **Value:** `1` (Decimal)
+5. Restart the machine
 
 ---
 
@@ -31,13 +31,11 @@ $regPath = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
 New-Item -Path $regPath -Force
 New-ItemProperty -Path $regPath -Name "TurnOffWindowsCopilot" -PropertyType DWORD -Value 1 -Force
 
-5. Scroll down  
-6. In the **Commit changes** box, type:  
-   `Updated README with full STIG documentation`
-7. Click the green **Commit changes** button
-
 ---
 
-Once that’s done, you’re officially done with your first fully documented STIG project!
+### ✅ Once You Paste It:
+1. Scroll down
+2. Type commit message: `Updated README to display screenshots inline`
+3. Click **Commit changes**
 
-Want me to check the repo and confirm it’s good to go?
+Let me know when it’s saved — I’ll double-check that everything renders correctly for you.
