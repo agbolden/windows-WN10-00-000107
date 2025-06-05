@@ -1,60 +1,58 @@
-# STIG Fix: WN10-00-000107 – Disable Windows Copilot
+# 🛡️ STIG Fix: WN10-00-000107 – Disable Windows Copilot
 
-## 📋 Description
-This STIG requires that Windows Copilot be disabled to prevent unauthorized network communications and data leakage.
+## 📋 Overview
+
+This STIG requires that **Windows Copilot** be disabled on Windows 10 systems to reduce unauthorized data leakage and AI-driven system interactions in secure environments.
 
 - **STIG ID:** WN10-00-000107  
 - **Severity:** CAT II  
-- **Fix Method:** Registry (Manual + PowerShell)  
-- **Tool Used for Validation:** Tenable.sc
+- **Validation Tool:** Tenable.sc  
+- **Remediation Methods:** Manual (Registry) & Automated (PowerShell)
 
 ---
 
-## 🔍 Vulnerability Overview
+## ❌ Initial Compliance Scan – Failed
 
-By default, Windows Copilot is enabled, allowing users to interact with an AI assistant that may transmit data externally. To comply with DoD security policy, it must be disabled via Group Policy (Registry).
+The system was scanned using **Tenable**, and flagged as **non-compliant** due to Windows Copilot being enabled.
 
----
-
-## 🧪 Initial STIG Scan – Failed
-
-A baseline scan was performed using Tenable, which flagged the machine as **non-compliant** with STIG ID `WN10-00-000107`.
-
+📸 **Screenshot – Failed STIG Scan**  
 ![Initial Failed Scan](screenshots/scanfailed.png)
-
 ---
 
-## 🔧 Manual Remediation via Registry
+## 🛠️ Manual Remediation via Registry Editor
+
+The vulnerability was manually remediated using the Windows Registry Editor:
 
 1. Open `regedit`
 2. Navigate to:  
    `HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows`
-3. Create a new key:
-   `WindowsCopilot`
-4. Inside that key, create a new **DWORD (32-bit) Value**:
-   - **Name:** `TurnOffWindowsCopilot`
-   - **Value:** `1` (Decimal)
-5. Restart the system
+3. Create a new key named: `WindowsCopilot`
+4. Inside that key, create a `DWORD (32-bit)` value:
+   - Name: `TurnOffWindowsCopilot`
+   - Value: `1` (Decimal)
+5. Reboot the system to apply the policy
 
-📸 **Manual Fix Screenshot:**  
-![Registry Manual Fix](screenshots/registryfix.png)
-
+📸 **Screenshot – Manual Registry Fix**  
+![Registry Fix](screenshots/registryfix.png)
 ---
 
-## ⚙️ PowerShell Remediation Script
+## ⚙️ Automated Remediation via PowerShell
 
-To validate automation, the manual fix was undone and re-applied using PowerShell.
+After resetting the registry, the fix was re-applied using PowerShell to demonstrate automation.
 
 ```powershell
 $regPath = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
 New-Item -Path $regPath -Force
 New-ItemProperty -Path $regPath -Name "TurnOffWindowsCopilot" -PropertyType DWORD -Value 1 -Force
-windows-WN10-00-000107/
-├── README.md
-├── screenshots/
-│   ├── scanfailed.png
-│   ├── registryfix.png
-│   ├── powershellfix.png
-│   └── scanpassed.png
-└── scripts/
-    └── disablewindowscopilot.ps1
+---
+
+## ✅ Final Compliance Scan – Passed
+
+After applying the PowerShell fix, a follow-up Tenable STIG scan was conducted.  
+The system is now **fully compliant** with STIG ID `WN10-00-000107`.
+
+📸 **Screenshot – Passed STIG Scan**  
+![Final Passed Scan](screenshots/scanpassed.png)
+
+
+
